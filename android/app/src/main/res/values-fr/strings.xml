@@ -1,0 +1,17 @@
+<resources>
+    <string name="notification_channel_name">Notifications Maeva</string>
+    <string name="notification_channel_description">Nouveaux leads, rendez-vous et alertes Maeva.</string>
+
+    <string name="error_offline_title">Pas de connexion</string>
+    <string name="error_offline_message">Maeva est injoignable. Vérifiez votre connexion réseau puis réessayez.</string>
+    <string name="error_generic_title">Une erreur est survenue</string>
+    <string name="error_generic_message">La page Maeva n\'a pas pu être chargée. Veuillez réessayer.</string>
+    <string name="action_retry">Réessayer</string>
+
+    <string name="toast_download_started">Téléchargement démarré</string>
+    <string name="toast_no_app_available">Aucune application ne peut ouvrir ce lien.</string>
+    <string name="toast_record_unavailable">Cet enregistrement n\'a pas pu être ouvert.</string>
+
+    <string name="webview_missing_title">WebView indisponible</string>
+    <string name="webview_missing_message">Android System WebView est manquant ou désactivé sur cet appareil. Activez-le dans les Paramètres pour utiliser Maeva.</string>
+</resources>

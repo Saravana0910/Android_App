@@ -1,0 +1,38 @@
+{
+  "_comment": [
+    "TEMPLATE ONLY - this file is not used by the build.",
+    "Download the real google-services.json from the Firebase console",
+    "(Project settings -> Your apps -> Android app) and save it as",
+    "android/app/google-services.json. That path is gitignored on purpose:",
+    "do not commit it. CI materialises it from the GOOGLE_SERVICES_JSON secret.",
+    "The android_client_info.package_name below must match the applicationId,",
+    "The android_client_info.package_name below must match the applicationId",
+    "(com.renault.maeva for both debug and release builds)."
+  ],  "project_info": {
+    "project_number": "000000000000",
+    "project_id": "replace-me",
+    "storage_bucket": "replace-me.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "android_client_info": {
+          "package_name": "com.renault.maeva"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "REPLACE_WITH_FIREBASE_ANDROID_API_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

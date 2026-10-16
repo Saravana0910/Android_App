@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name" translatable="false">Maeva</string>
+    <string name="notification_channel_id" translatable="false">maeva_default</string>
+    <string name="notification_channel_name">Maeva notifications</string>
+    <string name="notification_channel_description">New leads, appointments and alerts from Maeva.</string>
+
+    <string name="error_offline_title">No connection</string>
+    <string name="error_offline_message">Maeva could not be reached. Check your network connection and try again.</string>
+    <string name="error_generic_title">Something went wrong</string>
+    <string name="error_generic_message">The Maeva page could not be loaded. Please try again.</string>
+    <string name="action_retry">Retry</string>
+
+    <string name="toast_download_started">Download started</string>
+    <string name="toast_no_app_available">No application can open this link.</string>
+    <string name="toast_record_unavailable">This record could not be opened.</string>
+
+    <string name="webview_missing_title">WebView unavailable</string>
+    <string name="webview_missing_message">Android System WebView is missing or disabled on this device. Enable it in Settings to use Maeva.</string>
+</resources>

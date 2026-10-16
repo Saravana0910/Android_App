@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Maeva" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/maeva_primary</item>
+        <item name="colorOnPrimary">@color/maeva_on_primary</item>
+        <item name="android:colorBackground">@color/maeva_background</item>
+        <item name="android:statusBarColor">@color/maeva_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

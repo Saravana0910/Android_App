@@ -1,0 +1,10 @@
+# Build output
+*.apk
+*.aab
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
