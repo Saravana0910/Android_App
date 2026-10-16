@@ -42,6 +42,8 @@ object UrlPolicy {
 
     val homeUrl: String = baseUrl + sitePath
 
+    val startUrl: String = baseUrl + BuildConfig.MAEVA_START_PATH
+
     /**
      * True when the URL is an https URL on an approved domain. Everything else
      * is handed to the system browser or a Custom Tab.

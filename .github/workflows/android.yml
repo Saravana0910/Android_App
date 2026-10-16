@@ -20,6 +20,10 @@ on:
         description: 'Experience Cloud site path, e.g. /NestSFA/s/'
         required: false
         type: string
+      maeva_start_path:
+        description: 'Launch path, e.g. /login (separate from record routes)'
+        required: false
+        type: string
       build_release:
         description: 'Also build a release APK and AAB'
         required: false
@@ -82,18 +86,24 @@ jobs:
         env:
           INPUT_BASE_URL: ${{ inputs.maeva_base_url }}
           INPUT_SITE_PATH: ${{ inputs.maeva_site_path }}
+          INPUT_START_PATH: ${{ inputs.maeva_start_path }}
           VAR_BASE_URL: ${{ vars.MAEVA_BASE_URL }}
           VAR_SITE_PATH: ${{ vars.MAEVA_SITE_PATH }}
+          VAR_START_PATH: ${{ vars.MAEVA_START_PATH }}
           VAR_ALLOWED_DOMAINS: ${{ vars.MAEVA_ALLOWED_DOMAINS }}
         run: |
           ARGS=""
           BASE_URL="${INPUT_BASE_URL:-${VAR_BASE_URL}}"
           SITE_PATH="${INPUT_SITE_PATH:-${VAR_SITE_PATH}}"
+          START_PATH="${INPUT_START_PATH:-${VAR_START_PATH}}"
           if [ -n "${BASE_URL}" ]; then
             ARGS="${ARGS} -PmaevaBaseUrl=${BASE_URL}"
           fi
           if [ -n "${SITE_PATH}" ]; then
             ARGS="${ARGS} -PmaevaSitePath=${SITE_PATH}"
+          fi
+          if [ -n "${START_PATH}" ]; then
+            ARGS="${ARGS} -PmaevaStartPath=${START_PATH}"
           fi
           if [ -n "${VAR_ALLOWED_DOMAINS}" ]; then
             ARGS="${ARGS} -PmaevaAllowedDomains=${VAR_ALLOWED_DOMAINS}"
@@ -197,18 +207,24 @@ jobs:
         env:
           INPUT_BASE_URL: ${{ inputs.maeva_base_url }}
           INPUT_SITE_PATH: ${{ inputs.maeva_site_path }}
+          INPUT_START_PATH: ${{ inputs.maeva_start_path }}
           VAR_BASE_URL: ${{ vars.MAEVA_BASE_URL }}
           VAR_SITE_PATH: ${{ vars.MAEVA_SITE_PATH }}
+          VAR_START_PATH: ${{ vars.MAEVA_START_PATH }}
           VAR_ALLOWED_DOMAINS: ${{ vars.MAEVA_ALLOWED_DOMAINS }}
         run: |
           ARGS=""
           BASE_URL="${INPUT_BASE_URL:-${VAR_BASE_URL}}"
           SITE_PATH="${INPUT_SITE_PATH:-${VAR_SITE_PATH}}"
+          START_PATH="${INPUT_START_PATH:-${VAR_START_PATH}}"
           if [ -n "${BASE_URL}" ]; then
             ARGS="${ARGS} -PmaevaBaseUrl=${BASE_URL}"
           fi
           if [ -n "${SITE_PATH}" ]; then
             ARGS="${ARGS} -PmaevaSitePath=${SITE_PATH}"
+          fi
+          if [ -n "${START_PATH}" ]; then
+            ARGS="${ARGS} -PmaevaStartPath=${START_PATH}"
           fi
           if [ -n "${VAR_ALLOWED_DOMAINS}" ]; then
             ARGS="${ARGS} -PmaevaAllowedDomains=${VAR_ALLOWED_DOMAINS}"

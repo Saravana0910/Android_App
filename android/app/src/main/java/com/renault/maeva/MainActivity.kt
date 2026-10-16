@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             handleIntentTarget(intent, isColdStart = false)
         } else {
             val target = NotificationTarget.fromIntent(intent)?.resolveUrl()
-            loadUrl(target ?: UrlPolicy.homeUrl)
+            loadUrl(target ?: UrlPolicy.startUrl)
             NotificationTarget.clearFrom(intent)
         }
     }
@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity() {
         if (url == null) {
             Snackbar.make(binding.root, R.string.toast_record_unavailable, Snackbar.LENGTH_LONG)
                 .show()
-            if (isColdStart) loadUrl(UrlPolicy.homeUrl)
+            if (isColdStart) loadUrl(UrlPolicy.startUrl)
             return
         }
         loadUrl(url)
@@ -233,7 +233,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun retryLastLoad() {
-        val url = lastFailedUrl ?: binding.webView.url ?: UrlPolicy.homeUrl
+        val url = lastFailedUrl ?: binding.webView.url ?: UrlPolicy.startUrl
         loadUrl(url)
     }
 
@@ -258,7 +258,7 @@ class MainActivity : AppCompatActivity() {
         // before the local cookies are dropped.
         if (url != null && url.contains(LOGOUT_PATH, ignoreCase = true)) {
             DeviceRegistry.get(this).clearRegistration()
-            SessionManager.clearSession(binding.webView) { loadUrl(UrlPolicy.homeUrl) }
+            SessionManager.clearSession(binding.webView) { loadUrl(UrlPolicy.startUrl) }
             return
         }
 

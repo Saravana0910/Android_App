@@ -10,7 +10,7 @@ navigation policy, file upload/download and session cleanup.
 
 | | |
 |---|---|
-| Site | `https://renaultarca--hquat.sandbox.my.site.com/NestSFA/s/` |
+| Testing launch URL | `https://orgfarm-84cc9e3664-dev-ed.develop.my.site.com/login` |
 | Package | `com.renault.maeva` |
 | Language | Kotlin (View system + ViewBinding, no Compose) |
 | minSdk / targetSdk | 26 / 35 |
@@ -100,8 +100,9 @@ Site configuration is compiled into `BuildConfig` from Gradle properties, set in
 
 | Property | Default | Meaning |
 |---|---|---|
-| `maevaBaseUrl` | `https://renaultarca--hquat.sandbox.my.site.com` | Site origin |
-| `maevaSitePath` | `/NestSFA/s/` | Experience Cloud site path |
+| `maevaBaseUrl` | `https://orgfarm-84cc9e3664-dev-ed.develop.my.site.com` | Site origin |
+| `maevaSitePath` | `/` | Site prefix for record routes; confirm routes in the testing site |
+| `maevaStartPath` | `/login` | Exact launch and logout-return path, separate from record routes |
 | `maevaAllowedDomains` | `force.com,salesforce.com,my.site.com,…` | Domain suffixes allowed inside the WebView |
 | `maevaVersionCode` | `1` | Version code (CI uses the run number) |
 | `maevaVersionName` | `1.0.0` | Version name |
@@ -109,11 +110,15 @@ Site configuration is compiled into `BuildConfig` from Gradle properties, set in
 Example — build against production:
 
 ```bash
-./gradlew assembleRelease -PmaevaBaseUrl=https://<prod-host> -PmaevaSitePath=/NestSFA/s/
+./gradlew assembleRelease -PmaevaBaseUrl=https://<prod-host> -PmaevaSitePath=/NestSFA/s/ -PmaevaStartPath=/NestSFA/s/
 ```
 
 In CI these can also be supplied as repository **variables**
-(`MAEVA_BASE_URL`, `MAEVA_SITE_PATH`, `MAEVA_ALLOWED_DOMAINS`).
+(`MAEVA_BASE_URL`, `MAEVA_SITE_PATH`, `MAEVA_START_PATH`, `MAEVA_ALLOWED_DOMAINS`).
+Workflow inputs and repository variables override the committed testing defaults.
+Clear stale URL overrides when switching to the testing site. The testing
+`/login` page is not a record-route prefix: confirm a working record URL after
+sign-in before testing record notification taps.
 
 > **Important:** `maevaAllowedDomains` must include the corporate **identity
 > provider** domain. Any host not on this list is opened in an external browser

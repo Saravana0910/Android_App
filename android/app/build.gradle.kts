@@ -6,8 +6,12 @@ plugins {
 fun maevaProperty(name: String, fallback: String): String =
     (project.findProperty(name) as String?)?.trim()?.takeIf { it.isNotEmpty() } ?: fallback
 
-val maevaBaseUrl = maevaProperty("maevaBaseUrl", "https://renaultarca--hquat.sandbox.my.site.com").trimEnd('/')
-val maevaSitePath = maevaProperty("maevaSitePath", "/NestSFA/s/")
+val maevaBaseUrl = maevaProperty("maevaBaseUrl", "https://orgfarm-84cc9e3664-dev-ed.develop.my.site.com").trimEnd('/')
+val maevaSitePath = maevaProperty("maevaSitePath", "/")
+val maevaStartPath = maevaProperty("maevaStartPath", maevaSitePath)
+require(maevaStartPath.startsWith("/") && !maevaStartPath.startsWith("//")) {
+    "maevaStartPath must be a path on the configured site, starting with a single '/'."
+}
 val maevaAllowedDomains = maevaProperty(
     "maevaAllowedDomains",
     "force.com,salesforce.com,my.site.com,salesforce-experience.com,visualforce.com,documentforce.com"
@@ -26,6 +30,7 @@ android {
 
         buildConfigField("String", "MAEVA_BASE_URL", "\"$maevaBaseUrl\"")
         buildConfigField("String", "MAEVA_SITE_PATH", "\"$maevaSitePath\"")
+        buildConfigField("String", "MAEVA_START_PATH", "\"$maevaStartPath\"")
         buildConfigField("String", "MAEVA_ALLOWED_DOMAINS", "\"$maevaAllowedDomains\"")
 
         resourceConfigurations += listOf("en", "fr")
