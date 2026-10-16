@@ -85,6 +85,31 @@ android {
     }
 }
 
+val validateReleaseSigning by tasks.registering {
+    doLast {
+        val required = listOf(
+            "MAEVA_KEYSTORE_PATH",
+            "MAEVA_KEYSTORE_PASSWORD",
+            "MAEVA_KEY_ALIAS",
+            "MAEVA_KEY_PASSWORD"
+        )
+        val missing = required.filter { System.getenv(it).isNullOrBlank() }
+        check(missing.isEmpty()) {
+            "Release signing is required. Missing: ${missing.joinToString()}. " +
+                "Use assembleDebug for an installable test APK without release credentials."
+        }
+        check(file(System.getenv("MAEVA_KEYSTORE_PATH")).isFile) {
+            "MAEVA_KEYSTORE_PATH must point to an existing signing keystore."
+        }
+    }
+}
+
+tasks.configureEach {
+    if (name in setOf("packageRelease", "packageReleaseBundle", "bundleRelease", "validateSigningRelease")) {
+        dependsOn(validateReleaseSigning)
+    }
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

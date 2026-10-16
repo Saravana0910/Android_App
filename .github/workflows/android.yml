@@ -106,6 +106,12 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug ${{ steps.config.outputs.args }} --stacktrace
 
+      - name: Verify debug APK signature and alignment
+        run: |
+          APK="android/app/build/outputs/apk/debug/app-debug.apk"
+          "${ANDROID_HOME}/build-tools/35.0.0/apksigner" verify --verbose "${APK}"
+          "${ANDROID_HOME}/build-tools/35.0.0/zipalign" -c -P 16 4 "${APK}"
+
       - name: Run Android Lint
         working-directory: android
         run: ./gradlew lintDebug ${{ steps.config.outputs.args }} --stacktrace
@@ -172,15 +178,19 @@ jobs:
         id: signing
         env:
           KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          if [ -n "${KEYSTORE_BASE64}" ]; then
-            printf '%s' "${KEYSTORE_BASE64}" | base64 --decode > "${RUNNER_TEMP}/maeva.jks"
-            echo "keystore=${RUNNER_TEMP}/maeva.jks" >> "${GITHUB_OUTPUT}"
-            echo "Signing keystore decoded."
-          else
-            echo "keystore=" >> "${GITHUB_OUTPUT}"
-            echo "::warning title=Unsigned build::ANDROID_KEYSTORE_BASE64 is absent. The release artifacts will be unsigned and cannot be installed or uploaded to Play."
-          fi
+          for NAME in KEYSTORE_BASE64 KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            if [ -z "${!NAME}" ]; then
+              echo "::error title=Release signing required::Configure all four ANDROID signing secrets. For testing without a release key, download maeva-debug-apk and install app-debug.apk."
+              exit 1
+            fi
+          done
+          printf '%s' "${KEYSTORE_BASE64}" | base64 --decode > "${RUNNER_TEMP}/maeva.jks"
+          echo "keystore=${RUNNER_TEMP}/maeva.jks" >> "${GITHUB_OUTPUT}"
+          echo "Signing keystore decoded."
 
       - name: Resolve build configuration
         id: config
@@ -215,11 +225,17 @@ jobs:
           MAEVA_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: ./gradlew assembleRelease bundleRelease ${{ steps.config.outputs.args }} --stacktrace
 
+      - name: Verify release APK signature and alignment
+        run: |
+          APK="android/app/build/outputs/apk/release/app-release.apk"
+          "${ANDROID_HOME}/build-tools/35.0.0/apksigner" verify --verbose "${APK}"
+          "${ANDROID_HOME}/build-tools/35.0.0/zipalign" -c -P 16 4 "${APK}"
+
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
           name: maeva-release
           path: |
-            android/app/build/outputs/apk/release/*.apk
+            android/app/build/outputs/apk/release/app-release.apk
             android/app/build/outputs/bundle/release/*.aab
           if-no-files-found: error

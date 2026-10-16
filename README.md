@@ -60,8 +60,17 @@ touches `android/**`, and can be run manually.
 2. Optionally override the site origin and path for that run.
 3. When the run finishes, download the **`maeva-debug-apk`** artifact.
 
+Extract the downloaded ZIP and install **`app-debug.apk`** on your Android
+phone (Android 8 or later, including Android 16). This APK is automatically
+signed for testing; no release signing secrets are needed.
+
+Do not install an old `app-release-unsigned.apk`: Android rejects APKs without
+a signing certificate, often reporting "package appears to be invalid".
+An AAB is a Play publishing artifact, not a directly installable APK.
+
 To produce release artifacts (APK + AAB), run the workflow manually with
-**Also build a release APK and AAB** enabled.
+**Also build a release APK and AAB** enabled after configuring all four signing
+secrets listed below. CI verifies APK signatures and alignment before upload.
 
 ### 2.2 Locally
 
@@ -298,8 +307,10 @@ rather than sniff the user agent.
 
 ## 9. Release signing
 
-The release build is signed only when all four values are available; otherwise
-unsigned artifacts are produced.
+Release builds require all four values below. Missing signing credentials cause
+the build to fail instead of publishing an unsigned, non-installable APK. For
+testing without a release key, use the signed `app-debug.apk` from the
+`maeva-debug-apk` artifact. A signed release APK is named `app-release.apk`.
 
 | CI secret | Environment variable |
 |---|---|
